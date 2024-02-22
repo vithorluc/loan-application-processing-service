@@ -27,4 +27,4 @@ services:
       - "3000:3000"
     depends_on:
       - postgres
-    command: "npm run start:dev"
+    command: sh -c "npm run migration:run && npm run start:dev"
