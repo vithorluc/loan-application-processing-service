@@ -132,3 +132,147 @@ Table applications {
 users.role_id -> roles.id: Role
 applications.applicant_id -> users.id: Applicant
 ```
+
+### Description:
+
+This document provides examples and descriptions of how to interact with the authentication endpoints of the Loan Application Service using cURL commands. The service allows users to register new accounts, login, and receive JWT tokens for authentication.
+
+### Registration:
+
+Registers a new user account with the Loan Application Service.
+
+#### cURL Example:
+
+```bash
+curl -X POST localhost:3000/auth/register \
+-H "Content-Type: application/json" \
+-d '{
+    "email": "vithorvarela.academico@gmail.com",
+    "password": "12345678",
+    "username": "Vithor Varela"
+}'
+```
+
+#### Response:
+
+```json
+{
+    "username": "Vithor Varela",
+    "email": "vithorvarela.academico@gmail.com",
+    "id": "f31363ca-5df1-47e8-b0bf-c8bc32113dde"
+}
+```
+
+### Login:
+
+Logs in an existing user and retrieves a JWT token for authentication.
+
+#### cURL Example:
+
+```bash
+curl -X POST localhost:3000/auth/login \
+-H "Content-Type: application/json" \
+-d '{
+    "email": "vithorvarela.academico@gmail.com",
+    "password": "12345678"
+}'
+```
+
+#### Response:
+
+```json
+{
+    "user": {
+        "id": "f31363ca-5df1-47e8-b0bf-c8bc32113dde",
+        "username": "Vithor Varela",
+        "email": "vithorvarela.academico@gmail.com"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZpdGhvciBWYXJlbGEiLCJzdWIiOiJmMzEzNjNjYS01ZGYxLTQ3ZTgtYjBiZi1jOGJjMzIxMTNkZGUiLCJpYXQiOjE3MDg2MTkyMzN9.sps5C3f--WqmDDiZ-XNIPvkcWoFNuFwESAxs9ZtcUHQ"
+}
+```
+
+### Description:
+
+This document provides examples and descriptions of how to interact with the loan application endpoints of the Loan Application Service using cURL commands. These endpoints allow users to submit new loan applications, retrieve specific applications by ID, and retrieve all applications.
+
+### Submit Application:
+
+Submits a new loan application to the Loan Application Service.
+
+#### cURL Example:
+
+```bash
+curl -X POST localhost:3000/applications \
+-H "Authorization: Bearer <JWT_TOKEN>" \
+-H "Content-Type: application/json" \
+-d '{}'
+```
+
+#### Response:
+
+```json
+{
+    "id": 1,
+    "applicantId": "f31363ca-5df1-47e8-b0bf-c8bc32113dde",
+    "status": "pending",
+    "submissionDate": "2024-02-22T12:00:00.000Z"
+}
+```
+
+### Get Application by ID:
+
+Retrieves a specific loan application by its ID from the Loan Application Service.
+
+#### cURL Example:
+
+```bash
+curl -X GET localhost:3000/applications/1 \
+-H "Authorization: Bearer <JWT_TOKEN>"
+```
+
+#### Response:
+
+```json
+{
+    "id": 1,
+    "applicantId": "f31363ca-5df1-47e8-b0bf-c8bc32113dde",
+    "status": "pending",
+    "submissionDate": "2024-02-22T12:00:00.000Z"
+}
+```
+
+### Get All Applications:
+
+Retrieves all loan applications from the Loan Application Service.
+
+#### cURL Example:
+
+```bash
+curl -X GET localhost:3000/applications \
+-H "Authorization: Bearer <JWT_TOKEN>"
+```
+
+#### Response:
+
+```json
+[
+    {
+        "id": 1,
+        "applicantId": "f31363ca-5df1-47e8-b0bf-c8bc32113dde",
+        "status": "pending",
+        "submissionDate": "2024-02-22T12:00:00.000Z"
+    },
+    {
+        "id": 2,
+        "applicantId": "f31363ca-5df1-47e8-b0bf-c8bc32113dde",
+        "status": "approved",
+        "submissionDate": "2024-02-22T13:00:00.000Z"
+    }
+]
+```
+
+### Note:
+
+- Replace `localhost:3000` with the appropriate URL of the Loan Application Service.
+- Ensure the request body is properly formatted JSON.
+- The JWT token received upon successful login should be included in subsequent requests for authentication.
