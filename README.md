@@ -1,73 +1,134 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Loan Application Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Project Structure
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The loan application service project is structured as follows:
+
+```
+loan-application-service/
+│
+├── src/
+│   ├── application/               # Application layer
+│   │   ├── controllers/          # Controllers for handling HTTP requests
+│   │   │   └── ApplicationController.ts
+│   │   ├── dtos/                 # Data transfer objects
+│   │   │   └── LoanApplicationDto.ts
+│   │   ├── interfaces/           # Interfaces and types
+│   │   │   ├── ApplicationService.ts
+│   │   │   ├── UserRepository.ts
+│   │   │   └── RoleRepository.ts
+│   │   ├── services/             # Business logic services
+│   │   │   ├── ApplicationService.ts
+│   │   │   ├── UserService.ts
+│   │   │   └── RoleService.ts
+│   │   └── ApplicationModule.ts  # Application module (for NestJS)
+│   │
+│   ├── domain/                   # Domain layer
+│   │   ├── entities/             # Domain entities
+│   │   │   ├── User.ts
+│   │   │   ├── Role.ts
+│   │   │   └── Application.ts
+│   │   └── repositories/         # Interfaces for repositories
+│   │       ├── UserRepository.ts
+│   │       └── RoleRepository.ts
+│   │
+│   ├── infrastructure/           # Infrastructure layer
+│   │   ├── database/             # Database related code
+│   │   │   ├── migrations/       # Database migrations
+│   │   │   │   └── 20240221120000_create_tables.ts
+│   │   │   └── repositories/     # Implementations of repositories
+│   │   │       ├── UserRepositoryImpl.ts
+│   │   │       └── RoleRepositoryImpl.ts
+│   │   ├── middleware/           # Middleware for NestJS
+│   │   │   └── logging.middleware.ts
+│   │   └── config/                # Configuration files
+│   │       └── database.config.ts
+│   │
+│   └── presentation/             # Presentation layer (HTTP)
+│       ├── auth/                 # Authentication controllers
+│       │   ├── AuthController.ts
+│       ├── middleware/           # Middleware for authentication, etc.
+│       │   └── AuthMiddleware.ts
+│       ├── app.module.ts         # Main module (for NestJS)
+│       └── main.ts               # Entry point
+│
+├── test/                         # Unit and integration tests
+├── .dockerignore                 # Docker ignore file
+├── Dockerfile                    # Dockerfile for the application
+├── docker-compose.yml            # Docker Compose file
+├── tsconfig.json                 # TypeScript configuration file
+└── package.json                  # Node.js dependencies and scripts
+```
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The loan application service project is designed to manage loan applications. It follows a modular structure, separating concerns into different layers:
 
-## Installation
+- **Application Layer**: Handles HTTP requests and responses, including controllers, DTOs (Data Transfer Objects), interfaces, services, and modules.
+- **Domain Layer**: Contains domain entities and interfaces for repositories, defining the business logic and rules.
+- **Infrastructure Layer**: Manages external dependencies, such as database-related code, migrations, repositories implementations, middleware, and configuration files.
+- **Presentation Layer**: Responsible for the presentation layer, including authentication controllers, middleware, the main application module, and the entry point.
 
-```bash
-$ npm install
+To run the project using Docker and Docker Compose, follow these steps:
+
+1. Make sure you have Docker and Docker Compose installed on your system.
+2. Clone the repository to your local machine.
+3. Navigate to the project directory.
+4. Create a `.env` file in the root directory of the project with the necessary environment variables. For example:
+
+```
+DB_HOST=db
+DB_PORT=5432
+DB_USERNAME=myusername
+DB_PASSWORD=mypassword
+DB_DATABASE=mydatabase
+JWT_SECRET=mysecret
 ```
 
-## Running the app
+5. Run the following command to build and start the Docker containers:
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```
+docker-compose up --build
 ```
 
-## Test
+This command will build the Docker images for the application and database services defined in the `docker-compose.yml` file, and then start the containers.
 
-```bash
-# unit tests
-$ npm run test
+6. Once the containers are running, you can access the application at the specified port (e.g., `http://localhost:3000`).
 
-# e2e tests
-$ npm run test:e2e
+That's it! Your application should now be up and running using Docker and Docker Compose. Any changes you make to the code will automatically be reflected in the running containers.
 
-# test coverage
-$ npm run test:cov
+## Routes 
+
+| Route                        | Method | Description                                   | Authenticated |
+|------------------------------|--------|-----------------------------------------------|---------------|
+| /auth/register               | POST   | Register a new user account.                  | No            |
+| /auth/login                  | POST   | Login to receive a JWT token.                 | No            |
+| /applications                | POST   | Submit a new loan application.                | Yes           |
+| /applications/:id            | GET    | Retrieve the status of a specific application.| Yes           |
+| /applications                | GET    | Retrieve all loan applications.                | Yes           |
+
+## Database
+
+```markdown
+Table roles {
+  id int [pk]
+  name varchar(50) [not null]
+}
+
+Table users {
+  id int [pk]
+  username varchar(50) [not null, unique]
+  password varchar(255) [not null]
+  role_id int [not null]
+}
+
+Table applications {
+  id int [pk]
+  applicant_id int [not null]
+  status varchar(20) [not null]
+  submission_date timestamp [default: `CURRENT_TIMESTAMP`]
+}
+
+users.role_id -> roles.id: Role
+applications.applicant_id -> users.id: Applicant
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
